@@ -33,3 +33,15 @@ DB 연결, 서버 포트, API 키 등 설정 값 저장
 
 Properties → 단순 key=value 형식, 가볍고 심플
 JSON/YAML → 구조화된 데이터 저장 가능, 가독성 좋음
+
+
+---
+Controller → Service → DAO → DB 순서로 데이터가 이동하고,
+DTO는 데이터를 담아 전달하는 역할
+
+
+
+
+
+
+
