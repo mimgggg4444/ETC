@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Simple Chart</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+      fetch('test.json')
+        .then(res => res.json())
+        .then(data => {
+          // JSON 데이터에서 're'는 x축, 'it'는 y축 데이터로 사용
+          const labels = data.map(item => item.re);
+          const values = data.map(item => item.it);
+          
+          const ctx = document.getElementById('myChart').getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Data',
+                data: values,
+                borderColor: 'blue',
+                fill: false
+              }]
+            }
+          });
+        });
+    </script>
+  </body>
+</html>
