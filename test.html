@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로컬 JSON 데이터 그래프</title>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    #chartContainer {
+      width: 600px;
+      height: 400px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="chartContainer">
+    <canvas id="myChart"></canvas>
+  </div>
+
+  <script>
+    // HTML 파일과 동일한 위치에 있는 test.json 파일 경로
+    const jsonUrl = 'test.json';
+
+    // fetch를 사용하여 로컬 JSON 데이터 가져오기
+    fetch(jsonUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('네트워크 응답에 문제가 있습니다.');
+        }
+        return response.json();
+      })
+      .then(jsonData => {
+        // JSON 데이터에서 x축("re")과 y축("it") 데이터를 추출 (숫자형 변환)
+        const labels = jsonData.map(item => Number(item.re));
+        const dataPoints = jsonData.map(item => Number(item.it));
+
+        // Chart.js 차트 생성
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+          type: 'line', // 선 그래프
+          data: {
+            labels: labels,
+            datasets: [{
+              label: '데이터 값',
+              data: dataPoints,
+              borderColor: 'rgba(75, 192, 192, 1)',
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              fill: false,
+              tension: 0.1
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 're'
+                }
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'it'
+                }
+              }
+            }
+          }
+        });
+      })
+      .catch(error => {
+        console.error('JSON 데이터를 가져오는 도중 에러 발생:', error);
+      });
+  </script>
+</body>
+</html>
