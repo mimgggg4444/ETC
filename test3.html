@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>FileReader를 통한 Chart.js 차트</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <!-- 파일 선택 input -->
+    <input type="file" id="jsonFileInput" accept=".json">
+    <br><br>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    
+    <script>
+      document.getElementById('jsonFileInput').addEventListener('change', function(event){
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e){
+            try {
+              const data = JSON.parse(e.target.result);
+              // data가 [{ "re": "1", "it": "2" }, { "re": "2", "it": "3" }] 형태라고 가정
+              const labels = data.map(item => item.re);
+              const values = data.map(item => item.it);
+
+              const ctx = document.getElementById('myChart').getContext('2d');
+              new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    label: 'Data',
+                    data: values,
+                    borderColor: 'blue',
+                    fill: false
+                  }]
+                }
+              });
+            } catch (err) {
+              console.error('JSON 파싱 오류:', err);
+            }
+          };
+          reader.readAsText(file);
+        }
+      });
+    </script>
+  </body>
+</html>
