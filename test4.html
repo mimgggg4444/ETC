@@ -1,48 +1,47 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>FileReader를 통한 Chart.js 차트</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body>
-    <!-- 파일 선택 input -->
-    <input type="file" id="jsonFileInput" accept=".json">
-    <br><br>
-    <canvas id="myChart" width="400" height="400"></canvas>
-    
-    <script>
-      document.getElementById('jsonFileInput').addEventListener('change', function(event){
-        const file = event.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function(e){
-            try {
-              const data = JSON.parse(e.target.result);
-              // data가 [{ "re": "1", "it": "2" }, { "re": "2", "it": "3" }] 형태라고 가정
-              const labels = data.map(item => item.re);
-              const values = data.map(item => item.it);
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Filtered JSON Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart" width="400" height="400"></canvas>
+  <script>
+    // JSON 데이터를 제공하는 링크
+    const url = 'http://10.10.10.10:8080/controller_service';
 
-              const ctx = document.getElementById('myChart').getContext('2d');
-              new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: labels,
-                  datasets: [{
-                    label: 'Data',
-                    data: values,
-                    borderColor: 'blue',
-                    fill: false
-                  }]
-                }
-              });
-            } catch (err) {
-              console.error('JSON 파싱 오류:', err);
-            }
-          };
-          reader.readAsText(file);
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('네트워크 응답 에러');
         }
+        return response.json();
+      })
+      .then(data => {
+        // data가 배열이라고 가정하고, 각 객체의 chgtm와 chguserid만 추출
+        const labels = data.map(item => item.chgtm); 
+        const values = data.map(item => item.chguserid);
+        // 만약 chguserid가 숫자형 데이터로 처리되어야 한다면:
+        // const values = data.map(item => Number(item.chguserid));
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',  // 선 그래프 (원하는 유형으로 변경 가능)
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'chguserid',
+              data: values,
+              borderColor: 'blue',
+              fill: false
+            }]
+          }
+        });
+      })
+      .catch(error => {
+        console.error('JSON 데이터 로드 실패:', error);
       });
-    </script>
-  </body>
+  </script>
+</body>
 </html>
