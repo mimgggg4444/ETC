@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>ApexCharts 예제 모음</title>
+  <!-- ApexCharts 라이브러리 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <style>
+    .chart-container {
+      width: 45%;
+      margin: 20px;
+      float: left;
+      text-align: center;
+    }
+    .chart-label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    .clearfix::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  </style>
+</head>
+<body>
+  <h1>ApexCharts 예제 모음</h1>
+  <div class="clearfix">
+    <div class="chart-container">
+      <div id="chart-line"></div>
+      <div class="chart-label">Line Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-area"></div>
+      <div class="chart-label">Area Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-bar"></div>
+      <div class="chart-label">Bar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-pie"></div>
+      <div class="chart-label">Pie Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-donut"></div>
+      <div class="chart-label">Donut Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-radialbar"></div>
+      <div class="chart-label">RadialBar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-scatter"></div>
+      <div class="chart-label">Scatter Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-bubble"></div>
+      <div class="chart-label">Bubble Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-heatmap"></div>
+      <div class="chart-label">Heatmap Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-candlestick"></div>
+      <div class="chart-label">Candlestick Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-boxplot"></div>
+      <div class="chart-label">Box Plot Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-rangebar"></div>
+      <div class="chart-label">Range Bar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-radar"></div>
+      <div class="chart-label">Radar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-sparkline"></div>
+      <div class="chart-label">Sparkline Chart</div>
+    </div>
+  </div>
+  
+  <script>
+    // 1. Line Chart
+    var optionsLine = {
+      chart: { type: 'line', height: 300 },
+      series: [{ name: 'Series 1', data: [10, 20, 15, 30, 25] }],
+      xaxis: { categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'] }
+    };
+    new ApexCharts(document.querySelector("#chart-line"), optionsLine).render();
+
+    // 2. Area Chart
+    var optionsArea = {
+      chart: { type: 'area', height: 300 },
+      series: [{ name: 'Series 1', data: [5, 15, 10, 20, 18] }],
+      xaxis: { categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'] }
+    };
+    new ApexCharts(document.querySelector("#chart-area"), optionsArea).render();
+
+    // 3. Bar Chart
+    var optionsBar = {
+      chart: { type: 'bar', height: 300 },
+      series: [{ name: 'Series 1', data: [30, 40, 35, 50, 49] }],
+      xaxis: { categories: ['A', 'B', 'C', 'D', 'E'] }
+    };
+    new ApexCharts(document.querySelector("#chart-bar"), optionsBar).render();
+
+    // 4. Pie Chart
+    var optionsPie = {
+      chart: { type: 'pie', height: 300 },
+      series: [44, 55, 13, 43, 22],
+      labels: ['Apple', 'Mango', 'Banana', 'Orange', 'Grapes']
+    };
+    new ApexCharts(document.querySelector("#chart-pie"), optionsPie).render();
+
+    // 5. Donut Chart
+    var optionsDonut = {
+      chart: { type: 'donut', height: 300 },
+      series: [30, 40, 30],
+      labels: ['Chrome', 'Firefox', 'Safari']
+    };
+    new ApexCharts(document.querySelector("#chart-donut"), optionsDonut).render();
+
+    // 6. RadialBar Chart
+    var optionsRadialBar = {
+      chart: { type: 'radialBar', height: 300 },
+      series: [67],
+      plotOptions: { radialBar: { hollow: { size: '70%' } } },
+      labels: ['Progress']
+    };
+    new ApexCharts(document.querySelector("#chart-radialbar"), optionsRadialBar).render();
+
+    // 7. Scatter Chart
+    var optionsScatter = {
+      chart: { type: 'scatter', height: 300 },
+      series: [{
+        name: 'Sample',
+        data: [[1, 2], [2, 4], [3, 1], [4, 3], [5, 5]]
+      }],
+      xaxis: { type: 'numeric' },
+      yaxis: { type: 'numeric' }
+    };
+    new ApexCharts(document.querySelector("#chart-scatter"), optionsScatter).render();
+
+    // 8. Bubble Chart
+    var optionsBubble = {
+      chart: { type: 'bubble', height: 300 },
+      series: [{
+        name: 'Bubble',
+        data: [
+          { x: 10, y: 20, z: 15 },
+          { x: 15, y: 25, z: 10 },
+          { x: 20, y: 30, z: 20 }
+        ]
+      }],
+      xaxis: { type: 'numeric' },
+      yaxis: { type: 'numeric' }
+    };
+    new ApexCharts(document.querySelector("#chart-bubble"), optionsBubble).render();
+
+    // 9. Heatmap Chart
+    var optionsHeatmap = {
+      chart: { type: 'heatmap', height: 300 },
+      series: [{
+        name: 'Metric1',
+        data: [ { x: 'Jan', y: 10 }, { x: 'Feb', y: 20 }, { x: 'Mar', y: 30 } ]
+      }]
+    };
+    new ApexCharts(document.querySelector("#chart-heatmap"), optionsHeatmap).render();
+
+    // 10. Candlestick Chart
+    var optionsCandlestick = {
+      chart: { type: 'candlestick', height: 300 },
+      series: [{
+        name: 'Candlestick',
+        data: [
+          { x: new Date(1538778600000), y: [6629.81, 6650.5, 6623.04, 6633.33] },
+          { x: new Date(1538780400000), y: [6632.01, 6643.59, 6620, 6630.11] },
+          { x: new Date(1538782200000), y: [6630.71, 6648.95, 6623.34, 6635.65] }
+        ]
+      }]
+    };
+    new ApexCharts(document.querySelector("#chart-candlestick"), optionsCandlestick).render();
+
+    // 11. Box Plot Chart
+    var optionsBoxplot = {
+      chart: { type: 'boxPlot', height: 300 },
+      series: [{
+        name: 'Box',
+        data: [
+          { x: 'Category 1', y: [54, 66, 69, 75, 88] },
+          { x: 'Category 2', y: [43, 65, 69, 76, 81] },
+          { x: 'Category 3', y: [31, 39, 45, 51, 59] }
+        ]
+      }]
+    };
+    new ApexCharts(document.querySelector("#chart-boxplot"), optionsBoxplot).render();
+
+    // 12. Range Bar Chart
+    var optionsRangeBar = {
+      chart: { type: 'rangeBar', height: 300 },
+      series: [{
+        name: 'Range',
+        data: [
+          { x: 'Task 1', y: [1, 5] },
+          { x: 'Task 2', y: [3, 8] },
+          { x: 'Task 3', y: [6, 9] }
+        ]
+      }],
+      xaxis: { type: 'numeric' }
+    };
+    new ApexCharts(document.querySelector("#chart-rangebar"), optionsRangeBar).render();
+
+    // 13. Radar Chart
+    var optionsRadar = {
+      chart: { type: 'radar', height: 300 },
+      series: [{
+        name: 'Series 1',
+        data: [80, 50, 30, 40, 100, 20]
+      }],
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    };
+    new ApexCharts(document.querySelector("#chart-radar"), optionsRadar).render();
+
+    // 14. Sparkline Chart
+    var optionsSparkline = {
+      chart: { type: 'line', height: 100, sparkline: { enabled: true } },
+      series: [{ name: 'Sparkline', data: [5, 10, 5, 20, 15, 30] }],
+      stroke: { curve: 'smooth' }
+    };
+    new ApexCharts(document.querySelector("#chart-sparkline"), optionsSparkline).render();
+  </script>
+</body>
+</html>
