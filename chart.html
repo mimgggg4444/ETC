@@ -10,6 +10,11 @@
       width: 45%;
       margin: 20px;
       float: left;
+      text-align: center;
+    }
+    .chart-label {
+      margin-top: 10px;
+      font-weight: bold;
     }
     .clearfix::after {
       content: "";
@@ -21,20 +26,62 @@
 <body>
   <h1>ApexCharts 예제 모음</h1>
   <div class="clearfix">
-    <div class="chart-container" id="chart-line"></div>
-    <div class="chart-container" id="chart-area"></div>
-    <div class="chart-container" id="chart-bar"></div>
-    <div class="chart-container" id="chart-pie"></div>
-    <div class="chart-container" id="chart-donut"></div>
-    <div class="chart-container" id="chart-radialbar"></div>
-    <div class="chart-container" id="chart-scatter"></div>
-    <div class="chart-container" id="chart-bubble"></div>
-    <div class="chart-container" id="chart-heatmap"></div>
-    <div class="chart-container" id="chart-candlestick"></div>
-    <div class="chart-container" id="chart-boxplot"></div>
-    <div class="chart-container" id="chart-rangebar"></div>
-    <div class="chart-container" id="chart-radar"></div>
-    <div class="chart-container" id="chart-sparkline"></div>
+    <div class="chart-container">
+      <div id="chart-line"></div>
+      <div class="chart-label">Line Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-area"></div>
+      <div class="chart-label">Area Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-bar"></div>
+      <div class="chart-label">Bar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-pie"></div>
+      <div class="chart-label">Pie Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-donut"></div>
+      <div class="chart-label">Donut Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-radialbar"></div>
+      <div class="chart-label">RadialBar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-scatter"></div>
+      <div class="chart-label">Scatter Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-bubble"></div>
+      <div class="chart-label">Bubble Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-heatmap"></div>
+      <div class="chart-label">Heatmap Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-candlestick"></div>
+      <div class="chart-label">Candlestick Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-boxplot"></div>
+      <div class="chart-label">Box Plot Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-rangebar"></div>
+      <div class="chart-label">Range Bar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-radar"></div>
+      <div class="chart-label">Radar Chart</div>
+    </div>
+    <div class="chart-container">
+      <div id="chart-sparkline"></div>
+      <div class="chart-label">Sparkline Chart</div>
+    </div>
   </div>
   
   <script>
@@ -115,7 +162,7 @@
     };
     new ApexCharts(document.querySelector("#chart-bubble"), optionsBubble).render();
 
-    // 9. Heatmap
+    // 9. Heatmap Chart
     var optionsHeatmap = {
       chart: { type: 'heatmap', height: 300 },
       series: [{
