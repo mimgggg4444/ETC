@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chart Example</title>
+  <!-- Chart.js 라이브러리 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <!-- 차트를 그릴 캔버스 -->
+  <canvas id="myChart" width="400" height="200"></canvas>
+  <script>
+    // data.json 파일에서 데이터 불러오기
+    fetch('data.json')
+      .then(response => response.json())
+      .then(data => {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar', // 막대 차트 선택
+          data: data,
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      })
+      .catch(error => console.error('데이터 로드 중 에러 발생:', error));
+  </script>
+</body>
+</html>
