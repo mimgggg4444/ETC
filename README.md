@@ -40,6 +40,14 @@ Controller → Service → DAO → DB 순서로 데이터가 이동하고,
 DTO는 데이터를 담아 전달하는 역할
 
 
+---
+
+@RestController
+@CrossOrigin(origins = "http://your-frontend-domain.com") // 실제 프론트엔드 도메인으로 변경
+@RequestMapping("/api")
+public class DataController {
+    // REST API 메서드들
+}
 
 
 
