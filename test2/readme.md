@@ -1,7 +1,7 @@
 
 스피드런 post 기능 게시판 10분
 
-
+```
 src
  └─ main
      ├─ java
@@ -18,7 +18,7 @@ src
          │    ├─ list.html                // 게시글 목록 페이지
          │    └─ new.html                 // 새 글 작성 페이지
          └─ application.properties       // 설정 파일
-
+```
 Dependencies
 - Spring Web
 - Thymeleaf
