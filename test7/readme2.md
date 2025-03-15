@@ -1,3 +1,189 @@
+아래는 이전에 소개한 모든 도구들을 실행 시 명령줄 인자가 아닌, 프로그램 실행 후 사용자에게 입력을 받아 처리하도록 변경한 코드 예제입니다.
+
+
+---
+
+1. Spring Boot Actuator 검사툴 (Python)
+
+Spring Boot 서버 URL을 실행 시 입력받아 /actuator/health와 /actuator/info 엔드포인트를 검사하는 예제입니다.
+
+import requests
+
+def check_endpoint(url):
+    try:
+        response = requests.get(url, timeout=5)
+        return response.status_code, response.text
+    except Exception as e:
+        return None, str(e)
+
+def main():
+    base_url = input("Spring Boot 서버 URL을 입력하세요 (예: http://localhost:8080): ").strip()
+    endpoints = {
+        "Health": "/actuator/health",
+        "Info": "/actuator/info"
+    }
+    
+    print("\nSpring Boot 검사 시작...\n")
+    for name, endpoint in endpoints.items():
+        full_url = base_url.rstrip("/") + endpoint
+        status, content = check_endpoint(full_url)
+        if status is None:
+            print(f"[{name}] 검사 실패: {content}")
+        else:
+            print(f"[{name}] HTTP 상태 코드: {status}")
+            print("응답 내용:")
+            print(content)
+            print("-" * 40)
+
+if __name__ == "__main__":
+    main()
+
+사용법:
+
+1. 위 코드를 예를 들어 springboot_checker.py로 저장합니다.
+
+
+2. 터미널에서 python springboot_checker.py 명령어로 실행한 후, 안내 메시지에 따라 서버 URL을 입력합니다.
+
+
+
+
+---
+
+2. Python 코드 검사툴 (문법 및 린트 검사)
+
+실행 시 검사할 파일의 경로를 입력받아 문법 검사와 flake8을 이용한 코드 스타일 검사를 수행합니다.
+
+import os
+import subprocess
+
+def check_syntax(file_path):
+    """
+    파일의 Python 구문 오류를 검사합니다.
+    """
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            code = f.read()
+        compile(code, file_path, 'exec')
+        print("문법 검사: 오류가 없습니다.")
+        return True
+    except SyntaxError as e:
+        print("문법 검사: 오류가 발견되었습니다!")
+        print(e)
+        return False
+
+def check_lint(file_path):
+    """
+    flake8를 이용해 코드 스타일(린트) 검사를 수행합니다.
+    """
+    try:
+        result = subprocess.run(["flake8", file_path], capture_output=True, text=True)
+        if result.returncode == 0:
+            print("코드 스타일 검사: 문제가 없습니다.")
+        else:
+            print("코드 스타일 검사 결과:")
+            print(result.stdout)
+    except FileNotFoundError:
+        print("flake8가 설치되어 있지 않습니다. 'pip install flake8'로 설치 후 다시 시도하세요.")
+
+def main():
+    file_path = input("검사할 Python 파일의 경로를 입력하세요: ").strip()
+    if not os.path.exists(file_path):
+        print("지정한 파일이 존재하지 않습니다.")
+        return
+
+    print("\nPython 코드 검사를 시작합니다...\n")
+    if check_syntax(file_path):
+        check_lint(file_path)
+
+if __name__ == "__main__":
+    main()
+
+사용법:
+
+1. 위 코드를 예를 들어 code_checker.py로 저장합니다.
+
+
+2. 터미널에서 python code_checker.py를 실행하고, 안내 메시지에 따라 검사할 파일 경로를 입력합니다.
+
+
+
+
+---
+
+3. Python 코드 분석툴 (Radon 기반)
+
+실행 시 분석할 Python 파일 경로를 입력받아 순환 복잡도, 유지보수성 지수, Halstead 지표를 계산합니다.
+
+import os
+from radon.complexity import cc_visit
+from radon.metrics import mi_visit, h_visit
+
+def analyze_code(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            code = f.read()
+    except Exception as e:
+        print(f"파일 읽기 중 오류 발생: {e}")
+        return
+
+    print("=== Cyclomatic Complexity (순환 복잡도) 분석 ===")
+    try:
+        blocks = cc_visit(code)
+        if blocks:
+            for block in blocks:
+                print(f"{block.name} (라인 {block.lineno}): 복잡도 = {block.complexity}")
+        else:
+            print("분석할 코드 블록이 없습니다.")
+    except Exception as e:
+        print(f"복잡도 분석 중 오류: {e}")
+
+    print("\n=== Maintainability Index (유지보수성 지수) 분석 ===")
+    try:
+        mi_score = mi_visit(code, multi=True)
+        print(f"유지보수성 지수: {mi_score:.2f}")
+    except Exception as e:
+        print(f"유지보수성 지수 분석 중 오류: {e}")
+
+    print("\n=== Halstead Metrics (Halstead 지표) 분석 ===")
+    try:
+        h_metrics = h_visit(code)
+        if h_metrics:
+            for key, value in h_metrics.items():
+                print(f"{key}: {value}")
+        else:
+            print("Halstead 지표를 계산할 수 없습니다.")
+    except Exception as e:
+        print(f"Halstead metrics 분석 중 오류: {e}")
+
+def main():
+    file_path = input("분석할 Python 파일의 경로를 입력하세요: ").strip()
+    if not os.path.exists(file_path):
+        print("지정한 파일이 존재하지 않습니다.")
+        return
+    
+    print("\n코드 분석을 시작합니다...\n")
+    analyze_code(file_path)
+
+if __name__ == "__main__":
+    main()
+
+사용법:
+
+1. 위 코드를 예를 들어 analysis_tool.py로 저장합니다.
+
+
+2. 터미널에서 python analysis_tool.py를 실행하고, 안내 메시지에 따라 파일 경로를 입력합니다.
+
+
+
+
+---
+
+4. Spring Boot 프로젝트 분석툴 (MVC 및 전체 파일 분석)
+
+실행 시 분석할 Spring Boot 프로젝트의 루트 디렉토리 경로를 입력받아, 하위 모든 Java 파일을 대상으로 클래스별 어노테이션 및 메서드(매핑 여부 포함) 정보를 분석합니다.
+
 import os
 import javalang
 
@@ -21,7 +207,7 @@ def analyze_file(file_path):
     file_results = []
     
     # 파일 내의 타입 선언(클래스, 인터페이스, enum 등)을 탐색
-    for path, node in tree.filter(javalang.tree.TypeDeclaration):
+    for _, node in tree.filter(javalang.tree.TypeDeclaration):
         if isinstance(node, javalang.tree.ClassDeclaration):
             class_info = {}
             class_info['class_name'] = node.name
@@ -104,3 +290,18 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+사용법:
+
+1. 위 코드를 예를 들어 springboot_analysis_tool.py로 저장합니다.
+
+
+2. 터미널에서 python springboot_analysis_tool.py를 실행하고, 안내 메시지에 따라 프로젝트 루트 디렉토리 경로를 입력합니다.
+
+
+
+
+---
+
+각 도구는 실행 시 사용자로부터 필요한 입력을 받고, 입력받은 경로나 URL을 바탕으로 분석을 수행합니다. 필요에 따라 기능이나 출력 형식을 추가로 확장할 수 있습니다.
+
